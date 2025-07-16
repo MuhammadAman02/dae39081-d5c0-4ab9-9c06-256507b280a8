@@ -33,6 +33,11 @@ const userResponseZod = z.object({
   createdAt: z.string(),
 });
 
+const loginResponseZod = z.object({
+  token: z.string(),
+  user: userResponseZod,
+});
+
 export const createUserSchema = {
   tags: ["Users"],
   body: zodToJsonSchema(createUserZod),
@@ -45,9 +50,6 @@ export const loginUserSchema = {
   tags: ["Users"],
   body: zodToJsonSchema(loginUserZod),
   response: {
-    200: z.object({
-      token: z.string(),
-      user: userResponseZod,
-    }),
+    200: zodToJsonSchema(loginResponseZod),
   },
 };
