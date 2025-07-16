@@ -49,7 +49,5 @@ export const updateCartItemSchema = {
 export const removeFromCartSchema = {
   tags: ["Cart"],
   params: zodToJsonSchema(z.object({ id: z.string().uuid() })),
-  response: {
-    204: z.object({}),
-  },
+  // No response schema for 204 No Content
 };
