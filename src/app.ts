@@ -11,7 +11,9 @@ import { orderRoutes } from "./routes/order.route";
 
 export async function createApp() {
   const app = Fastify({
-    logger: true,
+    logger: {
+      level: "info",
+    },
   });
   
   await app.register(fastifySwagger, {
@@ -57,16 +59,9 @@ export async function createApp() {
     },
   });
 
-  // Register routes
-  app.register(root, { prefix: "/" });
-  app.register(userRoutes);
-  app.register(categoryRoutes);
-  app.register(productRoutes);
-  app.register(cartRoutes);
-  app.register(orderRoutes);
-
   // Global error handler
   app.setErrorHandler((error, request, reply) => {
+    console.error('Global error handler caught:', error);
     app.log.error(error);
     
     if (error.validation) {
@@ -78,6 +73,14 @@ export async function createApp() {
     
     reply.status(500).send({ error: "Internal Server Error" });
   });
+
+  // Register routes
+  app.register(root, { prefix: "/" });
+  app.register(userRoutes);
+  app.register(categoryRoutes);
+  app.register(productRoutes);
+  app.register(cartRoutes);
+  app.register(orderRoutes);
 
   return app;
 }
